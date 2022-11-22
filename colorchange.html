@@ -1,0 +1,202 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+        <style>
+            body{
+                padding: 0%;
+                margin: 0%;
+            }
+            .master{
+                width: 100%;
+                height:100%;
+                background-color: black;
+                display: flex;
+                flex-direction: row;
+                position: relative;
+            }
+            .bar{
+                height: 100%;
+                width: 5%;
+                transition: 0.4s;
+            }
+            h1{
+                font-size: 50px;
+                color: white;
+            }
+           .overlay{
+            transform: translateY(60%);
+            transform: translateX(50%);
+            position: absolute;
+            
+           }
+           #img{
+            transition: 0.4s;
+            
+           }
+            
+        </style>
+    </head>
+    <body>
+        <button id="btn">
+            Button
+        </button>
+        <audio src="audio.mp3" loop="true" autoplay="true" id="audio"></audio>
+        <div class="overlay">
+            <h1>
+                heyyy
+            </h1>
+        </div>
+        <div class="master" id="master">
+        </div>
+        
+        <script>    
+        document.getElementById('btn').onclick = function(){
+            document.getElementById('audio').play();
+
+            document.body.removeChild(document.getElementById('btn'));
+
+            var activeBar = 1;
+        for(var i=0; i<20; i++){
+            var bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.id = i+1;
+            document.getElementById('master').appendChild(bar);
+
+        }
+            //fromTo([255,192,203], [0,256,0]);
+            var functionOn = false;
+            var arrayOfIntervals = [];  
+
+            async function fromTo(rgbArrayI, rgbArrayF, log){
+                var redI = rgbArrayI[0];
+                var blueI = rgbArrayI[2];
+                var greenI = rgbArrayI[1];
+
+                var redF = rgbArrayF[0];
+                var blueF = rgbArrayF[2];
+                var greenF = rgbArrayF[1];
+
+                var redDiff = redF - redI;
+                var greenDiff = greenF - greenI;
+                var blueDiff = blueF - blueI;
+                
+                //time in seconds
+                //difference to be coverde, time given speed = difeence/time = change per mnillisecond;
+
+
+                var interval = setInterval(function(){
+                    functionOn = true;
+                    var redDone = false;
+                        if(redDone == false){
+                            if(redF > redI){
+                            redI++;
+                        }
+                        else{
+                            redI--;
+                        }
+                    }
+                    var blueDone = false;
+
+                    if(blueDone == false){
+                        if(blueF > blueI){
+                        blueI++;
+                    }
+                        else{
+                            blueI--;
+                        }
+                    }
+                    var greenDone = false;
+                    if(greenDone == false){
+                        if(greenF > greenI){
+                        greenI++;
+                    }
+                    else{
+                        greenI--;
+                    }
+                    }
+                    
+                    if(redI == redF){
+                        redDone = true;
+                    }
+                    if(greenI == greenF){
+                        greenDone = true;
+                    }
+                    if(blueI == blueF){
+                        blueDone = true;
+                    }
+                   if(redDone == true && blueDone == true && greenDone == true){
+                    console.log(log, 'done');
+                   }
+
+                    var outputStr = 'rgb(' + redI + ',' + blueI + ',' + greenI + ")"
+                    document.getElementById(activeBar.toString()).style['background-color'] = outputStr;
+                    console.log()
+
+                },50)
+                arrayOfIntervals.push(interval);
+            }
+
+
+            function sadSequence(){
+            
+              
+             fromTo([0,0,0], [114, 48, 21], 'func1');
+             setTimeout(function(){
+                clearInterval(arrayOfIntervals[arrayOfIntervals.length-1]);
+                arrayOfIntervals.pop();
+                fromTo([114,48,21], [142,59,30], 'func2');
+
+                
+             },6000);
+             
+             setTimeout(function(){
+                fromTo([142,59,30], [126,20,22], 'func2')
+                clearInterval(arrayOfIntervals[-1]);
+                arrayOfIntervals.pop();
+             },8000);
+             setTimeout(function(){
+                fromTo([126,20,22], [181,32,37], 'func3')
+                clearInterval(arrayOfIntervals[-1]);
+                arrayOfIntervals.pop();
+             },12000);
+             setTimeout(function(){
+                fromTo([181,32,37], [214,32,39])
+                clearInterval(arrayOfIntervals[-1]);
+                arrayOfIntervals.pop();
+             },16000);
+             setTimeout(function(){
+                fromTo([214,32,39], [238,45,40])
+                clearInterval(arrayOfIntervals[-1]);
+                arrayOfIntervals.pop();
+             },20000);     
+             setTimeout(function(){
+                fromTo([238,45,40], [244,127,82])
+                clearInterval(arrayOfIntervals[-1]);
+                arrayOfIntervals.pop();
+             },24000);
+                
+                
+            }
+            sadSequence();
+            chooseActiveBar();
+            function chooseActiveBar(){
+                var intervalFunc = setInterval(function(){
+                    if(activeBar == 20){
+                        activeBar = 0;
+                    }
+                    activeBar++;
+                    
+                },500)
+            }
+        }
+
+
+        function endInterval(interval){
+            clearInterval(interval);
+        }
+        
+        </script>
+    </body>
+</html>
